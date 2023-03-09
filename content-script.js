@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // 向页面注入JS
-function injectCustomJs(jsPath) {
+function injectCustomJs (jsPath) {
     jsPath = jsPath || 'js/inject.js';
     var temp = document.createElement('script');
     temp.setAttribute('type', 'text/javascript');
@@ -27,7 +27,7 @@ function injectCustomJs(jsPath) {
  * js直接绕过方式
  * @returns {number}
  */
-function zjrg() {
+function zjrg () {
     console.log("直接绕过开始")
     'use strict';
     var container = document.getElementById('container');
@@ -44,7 +44,6 @@ function zjrg() {
         return 1;
     }
     return 0;
-    console.log("直接绕过结束")
 }
 
 
@@ -58,9 +57,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.cmd === 'zjrg') {
         var r = zjrg();
         if (1 == r) {
-            sendResponse({cmd: 'success', msg: "直接绕过成功，请查看结果"})
+            sendResponse({ cmd: 'success', msg: "直接绕过成功，请查看结果" })
         } else {
-            sendResponse({cmd: 'success', msg: "绕过失败了，请尝试其他方式"})
+            sendResponse({ cmd: 'success', msg: "绕过失败了，请尝试其他方式" })
         }
     } else if (request.cmd === 'queryId') {
         // 发布事件通知inject.js去查收bolgId
@@ -75,7 +74,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 /**
  * 发布的e_queryBolgId事件
  */
-function invokeInjectJs() {
+function invokeInjectJs () {
     console.log("发布e_queryBolgId事件")
     window.dispatchEvent(new CustomEvent("e_queryBolgId"))
 }
@@ -87,7 +86,7 @@ function invokeInjectJs() {
 window.addEventListener("e_blogIdBack", function (e) {
     console.log('content-script收到inject.js消息：', e);
     if (null != e.detail && null != e.detail.id) {
-        sendMessageToPopup({cmd:'bolgId', data: e.detail.id})
+        sendMessageToPopup({ cmd: 'bolgId', data: e.detail.id })
     } else {
         alert("bolgId获取失败，该方式无效")
     }
@@ -98,7 +97,7 @@ window.addEventListener("e_blogIdBack", function (e) {
  * 主动发送消息到popup
  * @param message
  */
-function sendMessageToPopup(message) {
+function sendMessageToPopup (message) {
     chrome.runtime.sendMessage(message, function (response) {
         console.log('收到来自popup的回复：' + response);
     });
